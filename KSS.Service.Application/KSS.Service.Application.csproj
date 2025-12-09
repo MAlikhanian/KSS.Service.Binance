@@ -7,13 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KSS.Service.Domain\KSS.Service.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Behaviors\" />
     <Folder Include="Common\" />
     <Folder Include="DTOs\" />
     <Folder Include="Enums\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Interfaces\UnitofWork\" />
+    <Folder Include="Interfaces\UnitOfWork\" />
     <Folder Include="Interfaces\Services\" />
     <Folder Include="Interfaces\Repositories\" />
     <Folder Include="Mappings\" />
