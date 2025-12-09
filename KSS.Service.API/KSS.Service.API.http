@@ -1,0 +1,6 @@
+@KSS.Service.API_HostAddress = http://localhost:5122
+
+GET {{KSS.Service.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
