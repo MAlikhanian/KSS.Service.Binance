@@ -1,3 +1,8 @@
 <Solution>
-  <Project Path="KSS.Service.API/KSS.Service.API.csproj" />
+  <Folder Name="/src/">
+    <Project Path="KSS.Service.API/KSS.Service.API.csproj" />
+    <Project Path="KSS.Service.Application/KSS.Service.Application.csproj" />
+    <Project Path="KSS.Service.Domain/KSS.Service.Domain.csproj" />
+    <Project Path="KSS.Service.Infrastructure/KSS.Service.Infrastructure.csproj" />
+  </Folder>
 </Solution>

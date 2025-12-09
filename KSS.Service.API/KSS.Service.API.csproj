@@ -13,4 +13,13 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappings\" />
+    <Folder Include="Middleware\" />
+    <Folder Include="Requests\" />
+    <Folder Include="Validators\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Common\" />
+  </ItemGroup>
+
 </Project>
