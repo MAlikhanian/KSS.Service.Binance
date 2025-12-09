@@ -361,3 +361,16 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# User secrets and configuration files
+# Exclude actual config files with secrets (but keep example files)
+**/appsettings.json
+**/appsettings.Development.json
+**/appsettings.Production.json
+**/appsettings.Staging.json
+!**/appsettings.json.example
+!**/appsettings.*.json.example
+
+# User Secrets (already stored outside project)
+secrets.json
+*.secrets.json
