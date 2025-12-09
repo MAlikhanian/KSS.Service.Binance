@@ -24,4 +24,9 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KSS.Service.Application\KSS.Service.Application.csproj" />
+    <ProjectReference Include="..\KSS.Service.Domain\KSS.Service.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
