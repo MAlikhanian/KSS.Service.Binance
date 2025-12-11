@@ -1,4 +1,5 @@
 using KSS.Service.Application.Interfaces.Services;
+using KSS.Service.Application.Mappings;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -42,7 +43,7 @@ public class NewOrderCommandHandler : IRequestHandler<NewOrderCommand, NewOrderR
             return new NewOrderResponse
             {
                 Success = true,
-                Order = order
+                Order = FuturesOrderMapper.ToDto(order)
             };
         }
         catch (Exception ex)

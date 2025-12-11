@@ -1,7 +1,7 @@
 using Binance.Net.Clients;
 using Binance.Net.Objects.Options;
-using KSS.Service.Application.DTOs;
 using KSS.Service.Application.Interfaces.Services;
+using KSS.Service.Infrastructure.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -28,7 +28,7 @@ public class FuturesOrderService : IFuturesOrderService
         });
     }
 
-    public async Task<FuturesOrderDto?> GetOrderAsync(
+    public async Task<Domain.Entities.FuturesOrder?> GetOrderAsync(
         string symbol,
         long? orderId = null,
         string? clientOrderId = null,
@@ -49,24 +49,7 @@ public class FuturesOrderService : IFuturesOrderService
                 return null;
             }
 
-            var order = result.Data;
-            return new FuturesOrderDto
-            {
-                OrderId = order.Id,
-                Symbol = order.Symbol,
-                Status = order.Status.ToString(),
-                Side = order.Side.ToString(),
-                Type = order.Type.ToString(),
-                Price = order.Price,
-                Quantity = order.Quantity,
-                ExecutedQuantity = order.QuantityFilled,
-                AveragePrice = order.AveragePrice,
-                CreateTime = order.CreateTime,
-                UpdateTime = order.UpdateTime,
-                ClientOrderId = order.ClientOrderId,
-                StopPrice = order.StopPrice,
-                TimeInForce = order.TimeInForce.ToString()
-            };
+            return BinanceToDomainMapper.ToDomainEntity(result.Data);
         }
         catch (Exception ex)
         {
@@ -76,7 +59,7 @@ public class FuturesOrderService : IFuturesOrderService
         }
     }
 
-    public async Task<FuturesOrderDto?> NewOrderAsync(
+    public async Task<Domain.Entities.FuturesOrder?> NewOrderAsync(
         string symbol,
         string side,
         string type,
@@ -134,24 +117,7 @@ public class FuturesOrderService : IFuturesOrderService
                 return null;
             }
 
-            var order = result.Data;
-            return new FuturesOrderDto
-            {
-                OrderId = order.Id,
-                Symbol = order.Symbol,
-                Status = order.Status.ToString(),
-                Side = order.Side.ToString(),
-                Type = order.Type.ToString(),
-                Price = order.Price,
-                Quantity = order.Quantity,
-                ExecutedQuantity = order.QuantityFilled,
-                AveragePrice = order.AveragePrice,
-                CreateTime = order.CreateTime,
-                UpdateTime = order.UpdateTime,
-                ClientOrderId = order.ClientOrderId,
-                StopPrice = order.StopPrice,
-                TimeInForce = order.TimeInForce.ToString()
-            };
+            return BinanceToDomainMapper.ToDomainEntity(result.Data);
         }
         catch (Exception ex)
         {
