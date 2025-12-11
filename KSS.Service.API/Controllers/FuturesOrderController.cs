@@ -3,6 +3,10 @@ using KSS.Service.Application.Features.FuturesOrder.Commands.CancelMultipleOrder
 using KSS.Service.Application.Features.FuturesOrder.Commands.CancelOrder;
 using KSS.Service.Application.Features.FuturesOrder.Commands.ModifyMultipleOrders;
 using KSS.Service.Application.Features.FuturesOrder.Commands.ModifyOrder;
+using KSS.Service.Application.Features.FuturesOrder.Commands.NewLimitBuyOrder;
+using KSS.Service.Application.Features.FuturesOrder.Commands.NewLimitSellOrder;
+using KSS.Service.Application.Features.FuturesOrder.Commands.NewMarketBuyOrder;
+using KSS.Service.Application.Features.FuturesOrder.Commands.NewMarketSellOrder;
 using KSS.Service.Application.Features.FuturesOrder.Commands.NewMultipleOrders;
 using KSS.Service.Application.Features.FuturesOrder.Commands.NewOrder;
 using KSS.Service.Application.Features.FuturesOrder.Queries.GetAllOrders;
@@ -80,6 +84,66 @@ public class FuturesOrderController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<NewOrderResponse>> NewOrder(
         [FromBody] NewOrderCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await _mediator.Send(command, cancellationToken);
+        
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("market-buy")]
+    public async Task<ActionResult<NewMarketBuyOrderResponse>> NewMarketBuyOrder(
+        [FromBody] NewMarketBuyOrderCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await _mediator.Send(command, cancellationToken);
+        
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("market-sell")]
+    public async Task<ActionResult<NewMarketSellOrderResponse>> NewMarketSellOrder(
+        [FromBody] NewMarketSellOrderCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await _mediator.Send(command, cancellationToken);
+        
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("limit-buy")]
+    public async Task<ActionResult<NewLimitBuyOrderResponse>> NewLimitBuyOrder(
+        [FromBody] NewLimitBuyOrderCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await _mediator.Send(command, cancellationToken);
+        
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+
+        return Ok(response);
+    }
+
+    [HttpPost("limit-sell")]
+    public async Task<ActionResult<NewLimitSellOrderResponse>> NewLimitSellOrder(
+        [FromBody] NewLimitSellOrderCommand command,
         CancellationToken cancellationToken = default)
     {
         var response = await _mediator.Send(command, cancellationToken);
