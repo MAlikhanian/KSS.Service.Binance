@@ -24,6 +24,7 @@
     <Folder Include="Enums\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Features\FuturesMarketData\" />
     <Folder Include="Interfaces\UnitOfWork\" />
     <Folder Include="Interfaces\Services\" />
     <Folder Include="Interfaces\Repositories\" />
