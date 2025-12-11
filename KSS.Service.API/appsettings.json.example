@@ -6,6 +6,10 @@
     }
   },
   "AllowedHosts": "*",
+  "Server": {
+    "HttpPorts": "8080",
+    "HttpsPorts": "8081"
+  },
   "Exchange": {
     "ApiKey": "YOUR_API_KEY_HERE",
     "ApiSecret": "YOUR_API_SECRET_HERE"

@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/deployment/">
+    <File Path="Command.txt" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="KSS.Service.API/KSS.Service.API.csproj" />
     <Project Path="KSS.Service.Application/KSS.Service.Application.csproj" />

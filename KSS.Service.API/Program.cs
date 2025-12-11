@@ -3,6 +3,20 @@ using KSS.Service.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Set ports from appsettings.json
+var httpPorts = builder.Configuration["Server:HttpPorts"];
+var httpsPorts = builder.Configuration["Server:HttpsPorts"];
+
+if (!string.IsNullOrEmpty(httpPorts))
+{
+    Environment.SetEnvironmentVariable("ASPNETCORE_HTTP_PORTS", httpPorts);
+}
+
+if (!string.IsNullOrEmpty(httpsPorts))
+{
+    Environment.SetEnvironmentVariable("ASPNETCORE_HTTPS_PORTS", httpsPorts);
+}
+
 // Add services to the container.
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();

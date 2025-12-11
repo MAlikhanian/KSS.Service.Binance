@@ -5,6 +5,10 @@
       "Microsoft.AspNetCore": "Warning"
     }
   },
+  "Server": {
+    "HttpPorts": "8080",
+    "HttpsPorts": "8081"
+  },
   "Exchange": {
     "ApiKey": "YOUR_DEV_API_KEY_HERE",
     "ApiSecret": "YOUR_DEV_API_SECRET_HERE"
