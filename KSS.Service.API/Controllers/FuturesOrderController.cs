@@ -11,8 +11,6 @@ using KSS.Service.Application.Features.FuturesOrder.Commands.NewMultipleOrders;
 using KSS.Service.Application.Features.FuturesOrder.Commands.NewOrder;
 using KSS.Service.Application.Features.FuturesOrder.Queries.GetAllOrders;
 using KSS.Service.Application.Features.FuturesOrder.Queries.GetOrder;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace KSS.Service.API.Controllers;
 
@@ -46,7 +44,7 @@ public class FuturesOrderController : ControllerBase
         };
 
         var response = await _mediator.Send(query, cancellationToken);
-        
+
         if (!response.Success)
         {
             if (response.ErrorMessage == "Order not found")
@@ -72,7 +70,7 @@ public class FuturesOrderController : ControllerBase
         };
 
         var response = await _mediator.Send(query, cancellationToken);
-        
+
         if (!response.Success)
         {
             return BadRequest(response);
@@ -87,7 +85,7 @@ public class FuturesOrderController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             return BadRequest(response);
@@ -102,7 +100,7 @@ public class FuturesOrderController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             return BadRequest(response);
@@ -117,7 +115,7 @@ public class FuturesOrderController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             return BadRequest(response);
@@ -132,7 +130,7 @@ public class FuturesOrderController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             return BadRequest(response);
@@ -147,7 +145,7 @@ public class FuturesOrderController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             return BadRequest(response);
@@ -162,7 +160,7 @@ public class FuturesOrderController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             return BadRequest(response);
@@ -186,7 +184,7 @@ public class FuturesOrderController : ControllerBase
         };
 
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             if (response.ErrorMessage?.Contains("not found") == true)
@@ -210,7 +208,7 @@ public class FuturesOrderController : ControllerBase
         };
 
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             return BadRequest(response);
@@ -225,7 +223,7 @@ public class FuturesOrderController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             return BadRequest(response);
@@ -240,7 +238,7 @@ public class FuturesOrderController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             if (response.ErrorMessage?.Contains("not found") == true)
@@ -259,7 +257,7 @@ public class FuturesOrderController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var response = await _mediator.Send(command, cancellationToken);
-        
+
         if (!response.Success)
         {
             return BadRequest(response);
