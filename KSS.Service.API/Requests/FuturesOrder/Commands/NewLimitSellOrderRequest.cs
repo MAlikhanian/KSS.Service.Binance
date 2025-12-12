@@ -1,10 +1,8 @@
 namespace KSS.Service.API.Requests.FuturesOrder.Commands;
 
-public class NewLimitSellOrderRequest
-{
-    public string Symbol { get; set; } = string.Empty;
-    public decimal Quantity { get; set; }
-    public decimal Price { get; set; }
-    public string? ClientOrderId { get; set; }
-}
+public record NewLimitSellOrderRequest(
+    string Symbol,
+    decimal Quantity,
+    decimal Price,
+    string? ClientOrderId = null);
 

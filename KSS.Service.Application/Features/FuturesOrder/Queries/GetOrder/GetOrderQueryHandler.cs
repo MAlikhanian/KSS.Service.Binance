@@ -1,11 +1,12 @@
+using KSS.Common.CQRS;
+using KSS.Common.Result;
 using KSS.Service.Application.Interfaces.Services;
 using KSS.Service.Application.Mappings;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Queries;
 
-public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, GetOrderResponse>
+public class GetOrderQueryHandler : IQueryHandlerApi<GetOrderQuery, DTOs.FuturesOrderDto>
 {
     private readonly IFuturesOrderService _futuresOrderService;
     private readonly ILogger<GetOrderQueryHandler> _logger;
@@ -18,7 +19,7 @@ public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, GetOrderRespo
         _logger = logger;
     }
 
-    public async Task<GetOrderResponse> Handle(GetOrderQuery request, CancellationToken cancellationToken)
+    public async Task<ApiResult<DTOs.FuturesOrderDto>> Handle(GetOrderQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -28,29 +29,19 @@ public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, GetOrderRespo
 
             if (order == null)
             {
-                return new GetOrderResponse
-                {
-                    Success = false,
-                    ErrorMessage = "Order not found"
-                };
+                return ApiResult<DTOs.FuturesOrderDto>.NotFoundResult("Order not found");
             }
 
-            return new GetOrderResponse
-            {
-                Success = true,
-                Order = FuturesOrderMapper.ToDto(order)
-            };
+            return ApiResult<DTOs.FuturesOrderDto>.SuccessResult(
+                FuturesOrderMapper.ToDto(order),
+                "Order retrieved successfully");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving order. Symbol: {Symbol}, OrderId: {OrderId}",
                 request.Symbol, request.OrderId);
             
-            return new GetOrderResponse
-            {
-                Success = false,
-                ErrorMessage = "An error occurred while retrieving the order"
-            };
+            return ApiResult<DTOs.FuturesOrderDto>.FailureResult("An error occurred while retrieving the order");
         }
     }
 }

@@ -1,11 +1,10 @@
-using MediatR;
+using KSS.Common.CQRS;
+using KSS.Service.Application.DTOs;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class NewMarketSellOrderCommand : IRequest<NewMarketSellOrderResponse>
-{
-    public string Symbol { get; set; } = string.Empty;
-    public decimal Quantity { get; set; }
-    public string? ClientOrderId { get; set; }
-}
+public record NewMarketSellOrderCommand(
+    string Symbol,
+    decimal Quantity,
+    string? ClientOrderId = null) : ICommandApi<FuturesOrderDto>;
 

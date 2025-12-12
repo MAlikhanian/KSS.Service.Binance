@@ -1,11 +1,10 @@
-using MediatR;
+using KSS.Common.CQRS;
+using KSS.Service.Application.DTOs;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Queries;
 
-public class GetOrderQuery : IRequest<GetOrderResponse>
-{
-    public string Symbol { get; set; } = string.Empty;
-    public long? OrderId { get; set; }
-    public string? ClientOrderId { get; set; }
-}
+public record GetOrderQuery(
+    string Symbol,
+    long? OrderId = null,
+    string? ClientOrderId = null) : IQueryApi<FuturesOrderDto>;
 

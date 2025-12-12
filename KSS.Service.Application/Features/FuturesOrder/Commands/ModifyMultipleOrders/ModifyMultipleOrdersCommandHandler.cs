@@ -1,9 +1,11 @@
-using MediatR;
+using KSS.Common.CQRS;
+using KSS.Common.Result;
+using KSS.Service.Application.DTOs;
 using Microsoft.Extensions.Logging;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class ModifyMultipleOrdersCommandHandler : IRequestHandler<ModifyMultipleOrdersCommand, ModifyMultipleOrdersResponse>
+public class ModifyMultipleOrdersCommandHandler : ICommandHandlerApi<ModifyMultipleOrdersCommand, List<FuturesOrderDto>>
 {
     private readonly ILogger<ModifyMultipleOrdersCommandHandler> _logger;
 
@@ -12,17 +14,19 @@ public class ModifyMultipleOrdersCommandHandler : IRequestHandler<ModifyMultiple
         _logger = logger;
     }
 
-    public async Task<ModifyMultipleOrdersResponse> Handle(ModifyMultipleOrdersCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<List<FuturesOrderDto>>> Handle(ModifyMultipleOrdersCommand request, CancellationToken cancellationToken)
     {
         try
         {
             await Task.CompletedTask;
-            return new ModifyMultipleOrdersResponse { Success = true };
+            return ApiResult<List<FuturesOrderDto>>.UpdateSuccess(
+                new List<FuturesOrderDto>(),
+                "Multiple orders modified successfully");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error modifying multiple orders. Symbol: {Symbol}", request.Symbol);
-            return new ModifyMultipleOrdersResponse { Success = false, ErrorMessage = "An error occurred while modifying orders" };
+            return ApiResult<List<FuturesOrderDto>>.FailureResult("An error occurred while modifying orders");
         }
     }
 }

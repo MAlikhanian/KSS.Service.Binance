@@ -1,11 +1,12 @@
+using KSS.Common.CQRS;
+using KSS.Common.Result;
 using KSS.Service.Application.Interfaces.Services;
 using KSS.Service.Application.Mappings;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class NewMarketBuyOrderCommandHandler : IRequestHandler<NewMarketBuyOrderCommand, NewMarketBuyOrderResponse>
+public class NewMarketBuyOrderCommandHandler : ICommandHandlerApi<NewMarketBuyOrderCommand, DTOs.FuturesOrderDto>
 {
     private readonly IFuturesOrderService _futuresOrderService;
     private readonly ILogger<NewMarketBuyOrderCommandHandler> _logger;
@@ -18,19 +19,18 @@ public class NewMarketBuyOrderCommandHandler : IRequestHandler<NewMarketBuyOrder
         _logger = logger;
     }
 
-    public async Task<NewMarketBuyOrderResponse> Handle(NewMarketBuyOrderCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<DTOs.FuturesOrderDto>> Handle(NewMarketBuyOrderCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var serviceRequest = new NewOrderCommand
-            {
-                Symbol = request.Symbol,
-                Side = "Buy",
-                Type = "Market",
-                Quantity = request.Quantity,
-                Price = null,
-                ClientOrderId = request.ClientOrderId
-            };
+            var serviceRequest = new NewOrderCommand(
+                request.Symbol,
+                "Buy",
+                "Market",
+                request.Quantity,
+                null,
+                request.ClientOrderId
+            );
 
             var order = await _futuresOrderService.NewOrderAsync(
                 serviceRequest,
@@ -38,28 +38,18 @@ public class NewMarketBuyOrderCommandHandler : IRequestHandler<NewMarketBuyOrder
 
             if (order == null)
             {
-                return new NewMarketBuyOrderResponse
-                {
-                    Success = false,
-                    ErrorMessage = "Failed to create market buy order"
-                };
+                return ApiResult<DTOs.FuturesOrderDto>.FailureResult("Failed to create market buy order");
             }
 
-            return new NewMarketBuyOrderResponse
-            {
-                Success = true,
-                Order = FuturesOrderMapper.ToDto(order)
-            };
+            return ApiResult<DTOs.FuturesOrderDto>.CreateSuccess(
+                FuturesOrderMapper.ToDto(order),
+                "Market buy order created successfully");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating market buy order. Symbol: {Symbol}", request.Symbol);
             
-            return new NewMarketBuyOrderResponse
-            {
-                Success = false,
-                ErrorMessage = "An error occurred while creating the order"
-            };
+            return ApiResult<DTOs.FuturesOrderDto>.FailureResult("An error occurred while creating the order");
         }
     }
 }

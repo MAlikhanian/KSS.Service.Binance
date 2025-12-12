@@ -1,9 +1,10 @@
-using MediatR;
+using KSS.Common.CQRS;
+using KSS.Common.Result;
 using Microsoft.Extensions.Logging;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class ModifyOrderCommandHandler : IRequestHandler<ModifyOrderCommand, ModifyOrderResponse>
+public class ModifyOrderCommandHandler : ICommandHandlerApi<ModifyOrderCommand, DTOs.FuturesOrderDto>
 {
     private readonly ILogger<ModifyOrderCommandHandler> _logger;
 
@@ -12,17 +13,19 @@ public class ModifyOrderCommandHandler : IRequestHandler<ModifyOrderCommand, Mod
         _logger = logger;
     }
 
-    public async Task<ModifyOrderResponse> Handle(ModifyOrderCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<DTOs.FuturesOrderDto>> Handle(ModifyOrderCommand request, CancellationToken cancellationToken)
     {
         try
         {
             await Task.CompletedTask;
-            return new ModifyOrderResponse { Success = true };
+            return ApiResult<DTOs.FuturesOrderDto>.UpdateSuccess(
+                null!,
+                "Order modified successfully");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error modifying order. Symbol: {Symbol}, OrderId: {OrderId}", request.Symbol, request.OrderId);
-            return new ModifyOrderResponse { Success = false, ErrorMessage = "An error occurred while modifying the order" };
+            return ApiResult<DTOs.FuturesOrderDto>.FailureResult("An error occurred while modifying the order");
         }
     }
 }

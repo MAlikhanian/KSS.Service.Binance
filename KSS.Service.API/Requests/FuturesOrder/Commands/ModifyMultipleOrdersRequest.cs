@@ -1,16 +1,12 @@
 namespace KSS.Service.API.Requests.FuturesOrder.Commands;
 
-public class ModifyMultipleOrdersRequest
-{
-    public string Symbol { get; set; } = string.Empty;
-    public List<OrderModificationRequest> Orders { get; set; } = new();
-}
+public record ModifyMultipleOrdersRequest(
+    string Symbol,
+    List<OrderModificationRequest> Orders);
 
-public class OrderModificationRequest
-{
-    public long? OrderId { get; set; }
-    public string? ClientOrderId { get; set; }
-    public decimal? Quantity { get; set; }
-    public decimal? Price { get; set; }
-}
+public record OrderModificationRequest(
+    long? OrderId = null,
+    string? ClientOrderId = null,
+    decimal? Quantity = null,
+    decimal? Price = null);
 

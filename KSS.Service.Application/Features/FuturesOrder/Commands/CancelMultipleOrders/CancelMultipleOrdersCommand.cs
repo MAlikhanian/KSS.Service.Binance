@@ -1,10 +1,9 @@
-using MediatR;
+using KSS.Common.CQRS;
+using KSS.Service.Application.DTOs;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class CancelMultipleOrdersCommand : IRequest<CancelMultipleOrdersResponse>
-{
-    public string Symbol { get; set; } = string.Empty;
-    public List<long> OrderIds { get; set; } = new();
-}
+public record CancelMultipleOrdersCommand(
+    string Symbol,
+    List<long> OrderIds) : ICommandApi<List<FuturesOrderDto>>;
 

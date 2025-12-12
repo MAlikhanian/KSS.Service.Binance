@@ -3,28 +3,23 @@ namespace KSS.Service.API.Controllers;
 [Route("api/[controller]")]
 public class FuturesOrderController : BaseController
 {
-    private readonly IMediator _mediator;
-
-    public FuturesOrderController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    public FuturesOrderController(IMediator mediator) : base(mediator) { }
 
     [HttpGet]
     public async Task<IActionResult> GetOrder([FromQuery] GetOrderRequest request)
     {
         var query = request.Adapt<GetOrderQuery>();
         var result = await _mediator.Send(query);
-        
-        if (!result.Success)
+
+        if (!result.Success ?? false)
         {
-            if (result.ErrorMessage == "Order not found")
+            if (result.Message?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
             {
                 return NotFound(result);
             }
             return BadRequest(result);
         }
-        
+
         return Ok(result);
     }
 
@@ -33,12 +28,12 @@ public class FuturesOrderController : BaseController
     {
         var query = request.Adapt<GetAllOrdersQuery>();
         var result = await _mediator.Send(query);
-        
-        if (!result.Success)
+
+        if (!result.Success ?? false)
         {
             return BadRequest(result);
         }
-        
+
         return Ok(result);
     }
 
@@ -47,8 +42,8 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<NewOrderCommand>();
         var result = await _mediator.Send(command);
-        
-        if (result.Success)
+
+        if (result.Success == true)
             return Ok(result);
         return BadRequest(result);
     }
@@ -58,8 +53,8 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<NewMarketBuyOrderCommand>();
         var result = await _mediator.Send(command);
-        
-        if (result.Success)
+
+        if (result.Success == true)
             return Ok(result);
         return BadRequest(result);
     }
@@ -69,8 +64,8 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<NewMarketSellOrderCommand>();
         var result = await _mediator.Send(command);
-        
-        if (result.Success)
+
+        if (result.Success == true)
             return Ok(result);
         return BadRequest(result);
     }
@@ -80,8 +75,8 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<NewLimitBuyOrderCommand>();
         var result = await _mediator.Send(command);
-        
-        if (result.Success)
+
+        if (result.Success == true)
             return Ok(result);
         return BadRequest(result);
     }
@@ -91,8 +86,8 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<NewLimitSellOrderCommand>();
         var result = await _mediator.Send(command);
-        
-        if (result.Success)
+
+        if (result.Success == true)
             return Ok(result);
         return BadRequest(result);
     }
@@ -102,8 +97,8 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<NewMultipleOrdersCommand>();
         var result = await _mediator.Send(command);
-        
-        if (result.Success)
+
+        if (result.Success == true)
             return Ok(result);
         return BadRequest(result);
     }
@@ -113,16 +108,16 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<CancelOrderCommand>();
         var result = await _mediator.Send(command);
-        
-        if (!result.Success)
+
+        if (!result.Success ?? false)
         {
-            if (result.ErrorMessage?.Contains("not found") == true)
+            if (result.Message?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
             {
                 return NotFound(result);
             }
             return BadRequest(result);
         }
-        
+
         return Ok(result);
     }
 
@@ -131,8 +126,8 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<CancelAllOpenOrdersCommand>();
         var result = await _mediator.Send(command);
-        
-        if (result.Success)
+
+        if (result.Success == true)
             return Ok(result);
         return BadRequest(result);
     }
@@ -142,8 +137,8 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<CancelMultipleOrdersCommand>();
         var result = await _mediator.Send(command);
-        
-        if (result.Success)
+
+        if (result.Success == true)
             return Ok(result);
         return BadRequest(result);
     }
@@ -153,16 +148,16 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<ModifyOrderCommand>();
         var result = await _mediator.Send(command);
-        
-        if (!result.Success)
+
+        if (!result.Success ?? false)
         {
-            if (result.ErrorMessage?.Contains("not found") == true)
+            if (result.Message?.Contains("not found", StringComparison.OrdinalIgnoreCase) == true)
             {
                 return NotFound(result);
             }
             return BadRequest(result);
         }
-        
+
         return Ok(result);
     }
 
@@ -171,8 +166,8 @@ public class FuturesOrderController : BaseController
     {
         var command = request.Adapt<ModifyMultipleOrdersCommand>();
         var result = await _mediator.Send(command);
-        
-        if (result.Success)
+
+        if (result.Success == true)
             return Ok(result);
         return BadRequest(result);
     }

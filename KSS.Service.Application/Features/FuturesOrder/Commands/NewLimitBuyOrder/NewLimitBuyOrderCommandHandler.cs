@@ -1,11 +1,12 @@
+using KSS.Common.CQRS;
+using KSS.Common.Result;
 using KSS.Service.Application.Interfaces.Services;
 using KSS.Service.Application.Mappings;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class NewLimitBuyOrderCommandHandler : IRequestHandler<NewLimitBuyOrderCommand, NewLimitBuyOrderResponse>
+public class NewLimitBuyOrderCommandHandler : ICommandHandlerApi<NewLimitBuyOrderCommand, DTOs.FuturesOrderDto>
 {
     private readonly IFuturesOrderService _futuresOrderService;
     private readonly ILogger<NewLimitBuyOrderCommandHandler> _logger;
@@ -18,19 +19,18 @@ public class NewLimitBuyOrderCommandHandler : IRequestHandler<NewLimitBuyOrderCo
         _logger = logger;
     }
 
-    public async Task<NewLimitBuyOrderResponse> Handle(NewLimitBuyOrderCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<DTOs.FuturesOrderDto>> Handle(NewLimitBuyOrderCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var serviceRequest = new NewOrderCommand
-            {
-                Symbol = request.Symbol,
-                Side = "Buy",
-                Type = "Limit",
-                Quantity = request.Quantity,
-                Price = request.Price,
-                ClientOrderId = request.ClientOrderId
-            };
+            var serviceRequest = new NewOrderCommand(
+                request.Symbol,
+                "Buy",
+                "Limit",
+                request.Quantity,
+                request.Price,
+                request.ClientOrderId
+            );
 
             var order = await _futuresOrderService.NewOrderAsync(
                 serviceRequest,
@@ -38,28 +38,18 @@ public class NewLimitBuyOrderCommandHandler : IRequestHandler<NewLimitBuyOrderCo
 
             if (order == null)
             {
-                return new NewLimitBuyOrderResponse
-                {
-                    Success = false,
-                    ErrorMessage = "Failed to create limit buy order"
-                };
+                return ApiResult<DTOs.FuturesOrderDto>.FailureResult("Failed to create limit buy order");
             }
 
-            return new NewLimitBuyOrderResponse
-            {
-                Success = true,
-                Order = FuturesOrderMapper.ToDto(order)
-            };
+            return ApiResult<DTOs.FuturesOrderDto>.CreateSuccess(
+                FuturesOrderMapper.ToDto(order),
+                "Limit buy order created successfully");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating limit buy order. Symbol: {Symbol}", request.Symbol);
             
-            return new NewLimitBuyOrderResponse
-            {
-                Success = false,
-                ErrorMessage = "An error occurred while creating the order"
-            };
+            return ApiResult<DTOs.FuturesOrderDto>.FailureResult("An error occurred while creating the order");
         }
     }
 }

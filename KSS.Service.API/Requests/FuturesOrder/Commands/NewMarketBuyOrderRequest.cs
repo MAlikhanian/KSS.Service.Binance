@@ -1,9 +1,7 @@
 namespace KSS.Service.API.Requests.FuturesOrder.Commands;
 
-public class NewMarketBuyOrderRequest
-{
-    public string Symbol { get; set; } = string.Empty;
-    public decimal Quantity { get; set; }
-    public string? ClientOrderId { get; set; }
-}
+public record NewMarketBuyOrderRequest(
+    string Symbol,
+    decimal Quantity,
+    string? ClientOrderId = null);
 

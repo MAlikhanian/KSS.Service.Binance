@@ -1,9 +1,11 @@
-using MediatR;
+using KSS.Common.CQRS;
+using KSS.Common.Result;
+using KSS.Service.Application.DTOs;
 using Microsoft.Extensions.Logging;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class NewMultipleOrdersCommandHandler : IRequestHandler<NewMultipleOrdersCommand, NewMultipleOrdersResponse>
+public class NewMultipleOrdersCommandHandler : ICommandHandlerApi<NewMultipleOrdersCommand, List<FuturesOrderDto>>
 {
     private readonly ILogger<NewMultipleOrdersCommandHandler> _logger;
 
@@ -12,17 +14,19 @@ public class NewMultipleOrdersCommandHandler : IRequestHandler<NewMultipleOrders
         _logger = logger;
     }
 
-    public async Task<NewMultipleOrdersResponse> Handle(NewMultipleOrdersCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<List<FuturesOrderDto>>> Handle(NewMultipleOrdersCommand request, CancellationToken cancellationToken)
     {
         try
         {
             await Task.CompletedTask;
-            return new NewMultipleOrdersResponse { Success = true };
+            return ApiResult<List<FuturesOrderDto>>.CreateSuccess(
+                new List<FuturesOrderDto>(),
+                "Multiple orders created successfully");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating multiple orders");
-            return new NewMultipleOrdersResponse { Success = false, ErrorMessage = "An error occurred while creating orders" };
+            return ApiResult<List<FuturesOrderDto>>.FailureResult("An error occurred while creating orders");
         }
     }
 }

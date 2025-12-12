@@ -1,9 +1,11 @@
-using MediatR;
+using KSS.Common.CQRS;
+using KSS.Common.Result;
+using KSS.Service.Application.DTOs;
 using Microsoft.Extensions.Logging;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class CancelAllOpenOrdersCommandHandler : IRequestHandler<CancelAllOpenOrdersCommand, CancelAllOpenOrdersResponse>
+public class CancelAllOpenOrdersCommandHandler : ICommandHandlerApi<CancelAllOpenOrdersCommand, List<FuturesOrderDto>>
 {
     private readonly ILogger<CancelAllOpenOrdersCommandHandler> _logger;
 
@@ -12,17 +14,19 @@ public class CancelAllOpenOrdersCommandHandler : IRequestHandler<CancelAllOpenOr
         _logger = logger;
     }
 
-    public async Task<CancelAllOpenOrdersResponse> Handle(CancelAllOpenOrdersCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<List<FuturesOrderDto>>> Handle(CancelAllOpenOrdersCommand request, CancellationToken cancellationToken)
     {
         try
         {
             await Task.CompletedTask;
-            return new CancelAllOpenOrdersResponse { Success = true };
+            return ApiResult<List<FuturesOrderDto>>.SuccessResult(
+                new List<FuturesOrderDto>(),
+                "All open orders canceled successfully");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error canceling all open orders. Symbol: {Symbol}", request.Symbol);
-            return new CancelAllOpenOrdersResponse { Success = false, ErrorMessage = "An error occurred while canceling orders" };
+            return ApiResult<List<FuturesOrderDto>>.FailureResult("An error occurred while canceling orders");
         }
     }
 }

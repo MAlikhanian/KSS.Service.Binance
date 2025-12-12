@@ -1,19 +1,16 @@
-using MediatR;
+using KSS.Common.CQRS;
+using KSS.Service.Application.DTOs;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class NewMultipleOrdersCommand : IRequest<NewMultipleOrdersResponse>
-{
-    public List<OrderRequest> Orders { get; set; } = new();
-}
+public record NewMultipleOrdersCommand(
+    List<OrderRequest> Orders) : ICommandApi<List<FuturesOrderDto>>;
 
-public class OrderRequest
-{
-    public string Symbol { get; set; } = string.Empty;
-    public string Side { get; set; } = string.Empty;
-    public string Type { get; set; } = string.Empty;
-    public decimal Quantity { get; set; }
-    public decimal? Price { get; set; }
-    public string? ClientOrderId { get; set; }
-}
+public record OrderRequest(
+    string Symbol,
+    string Side,
+    string Type,
+    decimal Quantity,
+    decimal? Price = null,
+    string? ClientOrderId = null);
 

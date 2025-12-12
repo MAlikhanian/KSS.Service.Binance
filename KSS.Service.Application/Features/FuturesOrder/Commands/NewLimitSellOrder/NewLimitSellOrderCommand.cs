@@ -1,12 +1,11 @@
-using MediatR;
+using KSS.Common.CQRS;
+using KSS.Service.Application.DTOs;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class NewLimitSellOrderCommand : IRequest<NewLimitSellOrderResponse>
-{
-    public string Symbol { get; set; } = string.Empty;
-    public decimal Quantity { get; set; }
-    public decimal Price { get; set; }
-    public string? ClientOrderId { get; set; }
-}
+public record NewLimitSellOrderCommand(
+    string Symbol,
+    decimal Quantity,
+    decimal Price,
+    string? ClientOrderId = null) : ICommandApi<FuturesOrderDto>;
 

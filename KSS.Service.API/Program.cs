@@ -1,9 +1,8 @@
 using FluentValidation;
-using FluentValidation;
+using KSS.Service.API.Mappings;
 using KSS.Service.Application;
 using KSS.Service.Infrastructure;
-using KSS.Service.API.Mappings;
-using System.Reflection;
+using Microsoft.OpenApi;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,12 +37,25 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "KSS Service Binance API",
         Version = "v1",
         Description = "API for managing futures orders on cryptocurrency exchanges"
     });
+
+    //c.SwaggerDoc("v1.0", new OpenApiInfo
+    //{
+    //    Title = $"{apiName} Api v1.0 ({DateTime.Now.ToShortDateString()}-{DateTime.Now.ToShortTimeString()})",
+    //    Description = $"Alborz {apiName} Api",
+    //    Version = "v1.0",
+
+    //    Contact = new OpenApiContact
+    //    {
+    //        Name = $"{apiName} Management Team",
+    //        Email = "support@alborz.com"
+    //    }
+    //});
 });
 
 var app = builder.Build();

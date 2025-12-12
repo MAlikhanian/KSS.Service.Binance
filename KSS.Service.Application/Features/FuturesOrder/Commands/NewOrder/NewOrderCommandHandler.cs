@@ -1,11 +1,12 @@
+using KSS.Common.CQRS;
+using KSS.Common.Result;
 using KSS.Service.Application.Interfaces.Services;
 using KSS.Service.Application.Mappings;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
-public class NewOrderCommandHandler : IRequestHandler<NewOrderCommand, NewOrderResponse>
+public class NewOrderCommandHandler : ICommandHandlerApi<NewOrderCommand, DTOs.FuturesOrderDto>
 {
     private readonly IFuturesOrderService _futuresOrderService;
     private readonly ILogger<NewOrderCommandHandler> _logger;
@@ -18,7 +19,7 @@ public class NewOrderCommandHandler : IRequestHandler<NewOrderCommand, NewOrderR
         _logger = logger;
     }
 
-    public async Task<NewOrderResponse> Handle(NewOrderCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<DTOs.FuturesOrderDto>> Handle(NewOrderCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -28,29 +29,19 @@ public class NewOrderCommandHandler : IRequestHandler<NewOrderCommand, NewOrderR
 
             if (order == null)
             {
-                return new NewOrderResponse
-                {
-                    Success = false,
-                    ErrorMessage = "Failed to create order"
-                };
+                return ApiResult<DTOs.FuturesOrderDto>.FailureResult("Failed to create order");
             }
 
-            return new NewOrderResponse
-            {
-                Success = true,
-                Order = FuturesOrderMapper.ToDto(order)
-            };
+            return ApiResult<DTOs.FuturesOrderDto>.CreateSuccess(
+                FuturesOrderMapper.ToDto(order),
+                "Order created successfully");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating new order. Symbol: {Symbol}, Side: {Side}, Type: {Type}",
                 request.Symbol, request.Side, request.Type);
             
-            return new NewOrderResponse
-            {
-                Success = false,
-                ErrorMessage = "An error occurred while creating the order"
-            };
+            return ApiResult<DTOs.FuturesOrderDto>.FailureResult("An error occurred while creating the order");
         }
     }
 }
