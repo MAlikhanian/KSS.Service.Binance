@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Queries.GetOrder;
+namespace KSS.Service.Application.Features.FuturesOrder.Queries;
 
 public class GetOrderQuery : IRequest<GetOrderResponse>
 {

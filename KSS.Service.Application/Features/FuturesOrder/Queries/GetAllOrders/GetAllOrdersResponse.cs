@@ -1,6 +1,6 @@
 using KSS.Service.Application.DTOs;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Queries.GetAllOrders;
+namespace KSS.Service.Application.Features.FuturesOrder.Queries;
 
 public class GetAllOrdersResponse
 {

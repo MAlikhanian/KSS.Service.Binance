@@ -1,6 +1,6 @@
 using KSS.Service.Application.DTOs;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.ModifyMultipleOrders;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class ModifyMultipleOrdersResponse
 {

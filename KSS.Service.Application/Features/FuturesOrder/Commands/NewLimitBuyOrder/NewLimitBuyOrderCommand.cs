@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.NewLimitBuyOrder;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class NewLimitBuyOrderCommand : IRequest<NewLimitBuyOrderResponse>
 {

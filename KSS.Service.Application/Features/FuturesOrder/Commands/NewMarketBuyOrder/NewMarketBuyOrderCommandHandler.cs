@@ -3,7 +3,7 @@ using KSS.Service.Application.Mappings;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.NewMarketBuyOrder;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class NewMarketBuyOrderCommandHandler : IRequestHandler<NewMarketBuyOrderCommand, NewMarketBuyOrderResponse>
 {

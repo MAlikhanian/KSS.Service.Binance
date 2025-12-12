@@ -3,7 +3,7 @@ using KSS.Service.Application.Mappings;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.NewLimitSellOrder;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class NewLimitSellOrderCommandHandler : IRequestHandler<NewLimitSellOrderCommand, NewLimitSellOrderResponse>
 {

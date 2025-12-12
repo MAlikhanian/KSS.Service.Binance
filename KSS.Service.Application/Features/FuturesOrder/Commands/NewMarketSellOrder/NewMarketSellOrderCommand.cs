@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.NewMarketSellOrder;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class NewMarketSellOrderCommand : IRequest<NewMarketSellOrderResponse>
 {

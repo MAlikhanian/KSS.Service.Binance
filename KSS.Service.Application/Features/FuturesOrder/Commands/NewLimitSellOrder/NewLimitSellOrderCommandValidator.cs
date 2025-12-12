@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.NewLimitSellOrder;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class NewLimitSellOrderCommandValidator : AbstractValidator<NewLimitSellOrderCommand>
 {

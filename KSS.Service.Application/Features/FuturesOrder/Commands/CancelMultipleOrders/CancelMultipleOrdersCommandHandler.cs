@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.CancelMultipleOrders;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class CancelMultipleOrdersCommandHandler : IRequestHandler<CancelMultipleOrdersCommand, CancelMultipleOrdersResponse>
 {

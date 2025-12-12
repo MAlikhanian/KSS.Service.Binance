@@ -1,4 +1,4 @@
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.CancelMultipleOrders;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class CancelMultipleOrdersResponse
 {

@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.ModifyMultipleOrders;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class ModifyMultipleOrdersCommandHandler : IRequestHandler<ModifyMultipleOrdersCommand, ModifyMultipleOrdersResponse>
 {

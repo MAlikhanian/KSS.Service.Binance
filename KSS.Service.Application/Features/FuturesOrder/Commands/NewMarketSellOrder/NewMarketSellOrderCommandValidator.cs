@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.NewMarketSellOrder;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class NewMarketSellOrderCommandValidator : AbstractValidator<NewMarketSellOrderCommand>
 {

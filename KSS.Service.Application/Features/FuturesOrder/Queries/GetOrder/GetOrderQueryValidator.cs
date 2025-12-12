@@ -1,7 +1,7 @@
 using FluentValidation;
 using System.Text.RegularExpressions;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Queries.GetOrder;
+namespace KSS.Service.Application.Features.FuturesOrder.Queries;
 
 public class GetOrderQueryValidator : AbstractValidator<GetOrderQuery>
 {

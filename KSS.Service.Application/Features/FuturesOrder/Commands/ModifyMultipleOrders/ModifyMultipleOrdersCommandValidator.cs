@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.ModifyMultipleOrders;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class ModifyMultipleOrdersCommandValidator : AbstractValidator<ModifyMultipleOrdersCommand>
 {

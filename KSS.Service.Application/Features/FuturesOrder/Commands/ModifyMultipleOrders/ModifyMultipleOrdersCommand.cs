@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.ModifyMultipleOrders;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class ModifyMultipleOrdersCommand : IRequest<ModifyMultipleOrdersResponse>
 {

@@ -1,6 +1,6 @@
 using KSS.Service.Application.DTOs;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.NewOrder;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class NewOrderResponse
 {

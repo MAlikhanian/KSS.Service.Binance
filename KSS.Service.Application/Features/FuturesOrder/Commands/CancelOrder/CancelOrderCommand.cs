@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.CancelOrder;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class CancelOrderCommand : IRequest<CancelOrderResponse>
 {

@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.CancelAllOpenOrders;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class CancelAllOpenOrdersCommandHandler : IRequestHandler<CancelAllOpenOrdersCommand, CancelAllOpenOrdersResponse>
 {

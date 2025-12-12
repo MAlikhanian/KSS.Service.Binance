@@ -3,7 +3,7 @@ using KSS.Service.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Queries.GetAllOrders;
+namespace KSS.Service.Application.Features.FuturesOrder.Queries;
 
 public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, GetAllOrdersResponse>
 {

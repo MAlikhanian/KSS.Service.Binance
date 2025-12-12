@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace KSS.Service.Application.Features.FuturesOrder.Commands.CancelAllOpenOrders;
+namespace KSS.Service.Application.Features.FuturesOrder.Commands;
 
 public class CancelAllOpenOrdersCommandValidator : AbstractValidator<CancelAllOpenOrdersCommand>
 {
