@@ -9,10 +9,10 @@ public static class MapsterConfig
     public static void ConfigureMappings()
     {
         // Map OrderRequestDto to OrderRequest
-        TypeAdapterConfig<OrderRequestDto, OrderRequest>.NewConfig();
+        //TypeAdapterConfig<OrderRequestDto, OrderRequest>.NewConfig();
         
         // Map OrderModificationRequest to OrderModification
-        TypeAdapterConfig<OrderModificationRequest, OrderModification>.NewConfig();
+        //TypeAdapterConfig<OrderModificationRequest, OrderModification>.NewConfig();
     }
 }
 
