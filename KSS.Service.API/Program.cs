@@ -1,5 +1,10 @@
+using FluentValidation;
+using FluentValidation;
 using KSS.Service.Application;
 using KSS.Service.Infrastructure;
+using KSS.Service.API.Mappings;
+using System.Reflection;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +25,12 @@ if (!string.IsNullOrEmpty(httpsPorts))
 // Add services to the container.
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
+
+// Configure Mapster mappings
+MapsterConfig.ConfigureMappings();
+
+// Add FluentValidation for API requests
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddControllers();
 

@@ -1,254 +1,179 @@
 namespace KSS.Service.API.Controllers;
 
-[ApiController]
 [Route("api/[controller]")]
-public class FuturesOrderController : ControllerBase
+public class FuturesOrderController : BaseController
 {
     private readonly IMediator _mediator;
-    private readonly ILogger<FuturesOrderController> _logger;
 
-    public FuturesOrderController(
-        IMediator mediator,
-        ILogger<FuturesOrderController> logger)
+    public FuturesOrderController(IMediator mediator)
     {
         _mediator = mediator;
-        _logger = logger;
     }
 
     [HttpGet]
-    public async Task<ActionResult<GetOrderResponse>> GetOrder(
-        [FromQuery] string symbol,
-        [FromQuery] long? orderId = null,
-        [FromQuery] string? clientOrderId = null,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetOrder([FromQuery] GetOrderRequest request)
     {
-        var query = new GetOrderQuery
+        var query = request.Adapt<GetOrderQuery>();
+        var result = await _mediator.Send(query);
+        
+        if (!result.Success)
         {
-            Symbol = symbol,
-            OrderId = orderId,
-            ClientOrderId = clientOrderId
-        };
-
-        var response = await _mediator.Send(query, cancellationToken);
-
-        if (!response.Success)
-        {
-            if (response.ErrorMessage == "Order not found")
+            if (result.ErrorMessage == "Order not found")
             {
-                return NotFound(response);
+                return NotFound(result);
             }
-            return BadRequest(response);
+            return BadRequest(result);
         }
-
-        return Ok(response);
+        
+        return Ok(result);
     }
 
     [HttpGet("all")]
-    public async Task<ActionResult<GetAllOrdersResponse>> GetAllOrders(
-        [FromQuery] string symbol,
-        [FromQuery] int? limit = null,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetAllOrders([FromQuery] GetAllOrdersRequest request)
     {
-        var query = new GetAllOrdersQuery
+        var query = request.Adapt<GetAllOrdersQuery>();
+        var result = await _mediator.Send(query);
+        
+        if (!result.Success)
         {
-            Symbol = symbol,
-            Limit = limit
-        };
-
-        var response = await _mediator.Send(query, cancellationToken);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
+            return BadRequest(result);
         }
-
-        return Ok(response);
+        
+        return Ok(result);
     }
 
     [HttpPost]
-    public async Task<ActionResult<NewOrderResponse>> NewOrder(
-        [FromBody] NewOrderCommand command,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> NewOrder([FromBody] NewOrderRequest request)
     {
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        var command = request.Adapt<NewOrderCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (result.Success)
+            return Ok(result);
+        return BadRequest(result);
     }
 
     [HttpPost("market-buy")]
-    public async Task<ActionResult<NewMarketBuyOrderResponse>> NewMarketBuyOrder(
-        [FromBody] NewMarketBuyOrderCommand command,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> NewMarketBuyOrder([FromBody] NewMarketBuyOrderRequest request)
     {
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        var command = request.Adapt<NewMarketBuyOrderCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (result.Success)
+            return Ok(result);
+        return BadRequest(result);
     }
 
     [HttpPost("market-sell")]
-    public async Task<ActionResult<NewMarketSellOrderResponse>> NewMarketSellOrder(
-        [FromBody] NewMarketSellOrderCommand command,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> NewMarketSellOrder([FromBody] NewMarketSellOrderRequest request)
     {
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        var command = request.Adapt<NewMarketSellOrderCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (result.Success)
+            return Ok(result);
+        return BadRequest(result);
     }
 
     [HttpPost("limit-buy")]
-    public async Task<ActionResult<NewLimitBuyOrderResponse>> NewLimitBuyOrder(
-        [FromBody] NewLimitBuyOrderCommand command,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> NewLimitBuyOrder([FromBody] NewLimitBuyOrderRequest request)
     {
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        var command = request.Adapt<NewLimitBuyOrderCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (result.Success)
+            return Ok(result);
+        return BadRequest(result);
     }
 
     [HttpPost("limit-sell")]
-    public async Task<ActionResult<NewLimitSellOrderResponse>> NewLimitSellOrder(
-        [FromBody] NewLimitSellOrderCommand command,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> NewLimitSellOrder([FromBody] NewLimitSellOrderRequest request)
     {
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        var command = request.Adapt<NewLimitSellOrderCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (result.Success)
+            return Ok(result);
+        return BadRequest(result);
     }
 
     [HttpPost("multiple")]
-    public async Task<ActionResult<NewMultipleOrdersResponse>> NewMultipleOrders(
-        [FromBody] NewMultipleOrdersCommand command,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> NewMultipleOrders([FromBody] NewMultipleOrdersRequest request)
     {
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        var command = request.Adapt<NewMultipleOrdersCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (result.Success)
+            return Ok(result);
+        return BadRequest(result);
     }
 
     [HttpDelete]
-    public async Task<ActionResult<CancelOrderResponse>> CancelOrder(
-        [FromQuery] string symbol,
-        [FromQuery] long? orderId = null,
-        [FromQuery] string? clientOrderId = null,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CancelOrder([FromQuery] CancelOrderRequest request)
     {
-        var command = new CancelOrderCommand
+        var command = request.Adapt<CancelOrderCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (!result.Success)
         {
-            Symbol = symbol,
-            OrderId = orderId,
-            ClientOrderId = clientOrderId
-        };
-
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
-        {
-            if (response.ErrorMessage?.Contains("not found") == true)
+            if (result.ErrorMessage?.Contains("not found") == true)
             {
-                return NotFound(response);
+                return NotFound(result);
             }
-            return BadRequest(response);
+            return BadRequest(result);
         }
-
-        return Ok(response);
+        
+        return Ok(result);
     }
 
     [HttpDelete("all")]
-    public async Task<ActionResult<CancelAllOpenOrdersResponse>> CancelAllOpenOrders(
-        [FromQuery] string symbol,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CancelAllOpenOrders([FromQuery] CancelAllOpenOrdersRequest request)
     {
-        var command = new CancelAllOpenOrdersCommand
-        {
-            Symbol = symbol
-        };
-
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        var command = request.Adapt<CancelAllOpenOrdersCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (result.Success)
+            return Ok(result);
+        return BadRequest(result);
     }
 
     [HttpDelete("multiple")]
-    public async Task<ActionResult<CancelMultipleOrdersResponse>> CancelMultipleOrders(
-        [FromBody] CancelMultipleOrdersCommand command,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CancelMultipleOrders([FromBody] CancelMultipleOrdersRequest request)
     {
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        var command = request.Adapt<CancelMultipleOrdersCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (result.Success)
+            return Ok(result);
+        return BadRequest(result);
     }
 
     [HttpPut]
-    public async Task<ActionResult<ModifyOrderResponse>> ModifyOrder(
-        [FromBody] ModifyOrderCommand command,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> ModifyOrder([FromBody] ModifyOrderRequest request)
     {
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
+        var command = request.Adapt<ModifyOrderCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (!result.Success)
         {
-            if (response.ErrorMessage?.Contains("not found") == true)
+            if (result.ErrorMessage?.Contains("not found") == true)
             {
-                return NotFound(response);
+                return NotFound(result);
             }
-            return BadRequest(response);
+            return BadRequest(result);
         }
-
-        return Ok(response);
+        
+        return Ok(result);
     }
 
     [HttpPut("multiple")]
-    public async Task<ActionResult<ModifyMultipleOrdersResponse>> ModifyMultipleOrders(
-        [FromBody] ModifyMultipleOrdersCommand command,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> ModifyMultipleOrders([FromBody] ModifyMultipleOrdersRequest request)
     {
-        var response = await _mediator.Send(command, cancellationToken);
-
-        if (!response.Success)
-        {
-            return BadRequest(response);
-        }
-
-        return Ok(response);
+        var command = request.Adapt<ModifyMultipleOrdersCommand>();
+        var result = await _mediator.Send(command);
+        
+        if (result.Success)
+            return Ok(result);
+        return BadRequest(result);
     }
 }
