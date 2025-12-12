@@ -22,14 +22,19 @@ public class NewLimitSellOrderCommandHandler : IRequestHandler<NewLimitSellOrder
     {
         try
         {
+            var serviceRequest = new NewOrderCommand
+            {
+                Symbol = request.Symbol,
+                Side = "Sell",
+                Type = "Limit",
+                Quantity = request.Quantity,
+                Price = request.Price,
+                ClientOrderId = request.ClientOrderId
+            };
+
             var order = await _futuresOrderService.NewOrderAsync(
-                symbol: request.Symbol,
-                side: "Sell",
-                type: "Limit",
-                quantity: request.Quantity,
-                price: request.Price,
-                clientOrderId: request.ClientOrderId,
-                cancellationToken: cancellationToken);
+                serviceRequest,
+                cancellationToken);
 
             if (order == null)
             {

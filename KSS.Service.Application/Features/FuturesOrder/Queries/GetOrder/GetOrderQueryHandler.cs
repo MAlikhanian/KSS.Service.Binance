@@ -23,10 +23,8 @@ public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, GetOrderRespo
         try
         {
             var order = await _futuresOrderService.GetOrderAsync(
-                symbol: request.Symbol,
-                orderId: request.OrderId,
-                clientOrderId: request.ClientOrderId,
-                cancellationToken: cancellationToken);
+                request,
+                cancellationToken);
 
             if (order == null)
             {

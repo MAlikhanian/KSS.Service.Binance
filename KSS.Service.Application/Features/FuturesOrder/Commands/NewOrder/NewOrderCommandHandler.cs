@@ -23,13 +23,8 @@ public class NewOrderCommandHandler : IRequestHandler<NewOrderCommand, NewOrderR
         try
         {
             var order = await _futuresOrderService.NewOrderAsync(
-                symbol: request.Symbol,
-                side: request.Side,
-                type: request.Type,
-                quantity: request.Quantity,
-                price: request.Price,
-                clientOrderId: request.ClientOrderId,
-                cancellationToken: cancellationToken);
+                request,
+                cancellationToken);
 
             if (order == null)
             {

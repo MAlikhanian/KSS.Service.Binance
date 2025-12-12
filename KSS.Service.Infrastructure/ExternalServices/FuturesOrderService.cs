@@ -1,5 +1,7 @@
 using Binance.Net.Clients;
 using Binance.Net.Objects.Options;
+using KSS.Service.Application.Features.FuturesOrder.Commands;
+using KSS.Service.Application.Features.FuturesOrder.Queries;
 using KSS.Service.Application.Interfaces.Services;
 using KSS.Service.Infrastructure.Mappings;
 using Microsoft.Extensions.Configuration;
@@ -29,23 +31,21 @@ public class FuturesOrderService : IFuturesOrderService
     }
 
     public async Task<Domain.Entities.FuturesOrder?> GetOrderAsync(
-        string symbol,
-        long? orderId = null,
-        string? clientOrderId = null,
+        GetOrderQuery request,
         CancellationToken cancellationToken = default)
     {
         try
         {
             var result = await _exchangeClient.UsdFuturesApi.Trading.GetOrderAsync(
-                symbol: symbol,
-                orderId: orderId,
-                origClientOrderId: clientOrderId,
+                symbol: request.Symbol,
+                orderId: request.OrderId,
+                origClientOrderId: request.ClientOrderId,
                 ct: cancellationToken);
 
             if (!result.Success || result.Data == null)
             {
                 _logger.LogWarning("Failed to get order. Symbol: {Symbol}, OrderId: {OrderId}, ClientOrderId: {ClientOrderId}, Error: {Error}",
-                    symbol, orderId, clientOrderId, result.Error?.Message);
+                    request.Symbol, request.OrderId, request.ClientOrderId, result.Error?.Message);
                 return null;
             }
 
@@ -54,66 +54,61 @@ public class FuturesOrderService : IFuturesOrderService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Exception occurred while getting order. Symbol: {Symbol}, OrderId: {OrderId}, ClientOrderId: {ClientOrderId}",
-                symbol, orderId, clientOrderId);
+                request.Symbol, request.OrderId, request.ClientOrderId);
             throw;
         }
     }
 
     public async Task<Domain.Entities.FuturesOrder?> NewOrderAsync(
-        string symbol,
-        string side,
-        string type,
-        decimal quantity,
-        decimal? price = null,
-        string? clientOrderId = null,
+        NewOrderCommand request,
         CancellationToken cancellationToken = default)
     {
         try
         {
             // Parse side enum
-            var orderSide = side.Equals("Buy", StringComparison.OrdinalIgnoreCase) 
+            var orderSide = request.Side.Equals("Buy", StringComparison.OrdinalIgnoreCase) 
                 ? Binance.Net.Enums.OrderSide.Buy 
                 : Binance.Net.Enums.OrderSide.Sell;
 
             // Parse order type enum
             Binance.Net.Enums.FuturesOrderType orderType;
-            if (type.Equals("Market", StringComparison.OrdinalIgnoreCase))
+            if (request.Type.Equals("Market", StringComparison.OrdinalIgnoreCase))
             {
                 orderType = Binance.Net.Enums.FuturesOrderType.Market;
             }
-            else if (type.Equals("Limit", StringComparison.OrdinalIgnoreCase))
+            else if (request.Type.Equals("Limit", StringComparison.OrdinalIgnoreCase))
             {
                 orderType = Binance.Net.Enums.FuturesOrderType.Limit;
             }
             else
             {
-                _logger.LogWarning("Unsupported order type: {Type}", type);
+                _logger.LogWarning("Unsupported order type: {Type}", request.Type);
                 return null;
             }
 
             // Place order - only include price for Limit orders
             var result = orderType == Binance.Net.Enums.FuturesOrderType.Limit
                 ? await _exchangeClient.UsdFuturesApi.Trading.PlaceOrderAsync(
-                    symbol: symbol,
+                    symbol: request.Symbol,
                     side: orderSide,
                     type: orderType,
-                    quantity: quantity,
-                    price: price ?? throw new ArgumentException("Price is required for Limit orders", nameof(price)),
-                    newClientOrderId: clientOrderId,
+                    quantity: request.Quantity,
+                    price: request.Price ?? throw new ArgumentException("Price is required for Limit orders", nameof(request.Price)),
+                    newClientOrderId: request.ClientOrderId,
                     timeInForce: Binance.Net.Enums.TimeInForce.GoodTillCanceled,
                     ct: cancellationToken)
                 : await _exchangeClient.UsdFuturesApi.Trading.PlaceOrderAsync(
-                    symbol: symbol,
+                    symbol: request.Symbol,
                     side: orderSide,
                     type: orderType,
-                    quantity: quantity,
-                    newClientOrderId: clientOrderId,
+                    quantity: request.Quantity,
+                    newClientOrderId: request.ClientOrderId,
                     ct: cancellationToken);
 
             if (!result.Success || result.Data == null)
             {
                 _logger.LogWarning("Failed to create order. Symbol: {Symbol}, Side: {Side}, Type: {Type}, Error: {Error}",
-                    symbol, side, type, result.Error?.Message);
+                    request.Symbol, request.Side, request.Type, result.Error?.Message);
                 return null;
             }
 
@@ -122,7 +117,7 @@ public class FuturesOrderService : IFuturesOrderService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Exception occurred while creating order. Symbol: {Symbol}, Side: {Side}, Type: {Type}",
-                symbol, side, type);
+                request.Symbol, request.Side, request.Type);
             throw;
         }
     }

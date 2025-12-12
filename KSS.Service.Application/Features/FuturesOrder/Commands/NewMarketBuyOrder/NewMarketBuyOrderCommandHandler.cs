@@ -22,14 +22,19 @@ public class NewMarketBuyOrderCommandHandler : IRequestHandler<NewMarketBuyOrder
     {
         try
         {
+            var serviceRequest = new NewOrderCommand
+            {
+                Symbol = request.Symbol,
+                Side = "Buy",
+                Type = "Market",
+                Quantity = request.Quantity,
+                Price = null,
+                ClientOrderId = request.ClientOrderId
+            };
+
             var order = await _futuresOrderService.NewOrderAsync(
-                symbol: request.Symbol,
-                side: "Buy",
-                type: "Market",
-                quantity: request.Quantity,
-                price: null,
-                clientOrderId: request.ClientOrderId,
-                cancellationToken: cancellationToken);
+                serviceRequest,
+                cancellationToken);
 
             if (order == null)
             {

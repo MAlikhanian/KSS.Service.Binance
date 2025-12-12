@@ -1,3 +1,5 @@
+using KSS.Service.Application.Features.FuturesOrder.Commands;
+using KSS.Service.Application.Features.FuturesOrder.Queries;
 using KSS.Service.Domain.Entities;
 
 namespace KSS.Service.Application.Interfaces.Services;
@@ -5,18 +7,11 @@ namespace KSS.Service.Application.Interfaces.Services;
 public interface IFuturesOrderService
 {
     Task<FuturesOrder?> GetOrderAsync(
-        string symbol,
-        long? orderId = null,
-        string? clientOrderId = null,
+        GetOrderQuery request,
         CancellationToken cancellationToken = default);
 
     Task<FuturesOrder?> NewOrderAsync(
-        string symbol,
-        string side,
-        string type,
-        decimal quantity,
-        decimal? price = null,
-        string? clientOrderId = null,
+        NewOrderCommand request,
         CancellationToken cancellationToken = default);
 }
 
